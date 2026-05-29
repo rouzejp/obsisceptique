@@ -51,6 +51,17 @@ Veille / Inbox → Revendication → Analyse / OSINT → Corrélation → Rédac
 ```
 Chaque étape est représentée par une carte Kanban qui avance dans les colonnes (triage → ready → running → done).
 
+## Documentation système
+
+Pour comprendre le fonctionnement complet (Hermes Agent, WordPress, automatisation) :
+
+- [[_system/01-architecture]] — Architecture complète
+- [[_system/02-workflow]] — Pipeline de vérification
+- [[_system/03-hermes-setup]] — Configuration Hermes
+- [[_system/04-skills]] — Skills d'automatisation
+- [[_system/05-wordpress]] — Publication WordPress
+- [[_system/06-forking]] — Forker et adapter
+
 ## Licence
 
 Ce coffre est publié en licence libre — voir LICENSE.
