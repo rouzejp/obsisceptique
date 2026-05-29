@@ -6,7 +6,7 @@ ObsiSceptique est un système de connaissance structuré autour de la vérificat
 
 ## Licence
 
-Ce projet est publié sous licence MIT — vous êtes libre de l'utiliser, le modifier, le redistribuer.
+Ce projet est publié sous licence CC-BY-NC 4.0 — vous êtes libre de le partager et l'adapter, pas d'utilisation commerciale. Voir LICENSE.
 
 ## Structure
 
