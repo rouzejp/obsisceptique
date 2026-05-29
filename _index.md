@@ -26,9 +26,30 @@ Structure inspirée du système de connaissances Jenkins.
   paranormal/
   derives-ia/
 06_Publications/   ← brouillons d'articles
+  brouillons/      ← en cours d'écriture
+  publie/          ← publié sur le blog
 07_Templates/      ← modèles de fiches
 08_Veille/         ← watchers RSS, résumés Mastodon
+  watchers/        ← config des flux
 ```
+
+## Orchestration (Kanban)
+
+Les boards Kanban Hermes servent de couche d'orchestration :
+
+| Board | Usage |
+|---|---|
+| [[hermes.rouze.eu](https://hermes.rouze.eu) → Kanban | Vue d'ensemble des tâches |
+| `default` | Veille, articles, OSINT — de la découverte à la publication |
+| `homelab` | Tâches infrastructure |
+| `lecture` | Livres, articles à noter |
+
+**Flux de travail typique :**
+```
+Veille / Inbox → Revendication → Analyse / OSINT → Corrélation → Rédaction → Publication
+   (01_Inbox)    (02_Revendic.)  (03_Vérif.+Sources) (05_Corrél.)   (06_Publications)
+```
+Chaque étape est représentée par une carte Kanban qui avance dans les colonnes (triage → ready → running → done).
 
 ## Licence
 
