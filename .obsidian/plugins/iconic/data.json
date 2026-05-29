@@ -1,0 +1,94 @@
+{
+  "biggerIcons": "mobile",
+  "clickableIcons": "desktop",
+  "showAllFileIcons": true,
+  "showAllFolderIcons": true,
+  "minimalFolderIcons": true,
+  "showMarkdownTabIcons": true,
+  "showTitleIcons": true,
+  "showTagPillIcons": false,
+  "showMenuActions": true,
+  "showSuggestionIcons": true,
+  "showQuickSwitcherIcons": true,
+  "showMoveFileIcons": true,
+  "showItemName": "desktop",
+  "biggerSearchResults": "mobile",
+  "maxSearchResults": 50,
+  "colorPicker1": "list",
+  "colorPicker2": "rgb",
+  "uncolorHover": false,
+  "uncolorDrag": false,
+  "uncolorSelect": false,
+  "uncolorQuick": false,
+  "maxBackups": 5,
+  "dialogState": {
+    "iconMode": true,
+    "emojiMode": true,
+    "rulePage": "folder"
+  },
+  "appIcons": {},
+  "tabIcons": {},
+  "fileIcons": {
+    "35_Queries/veille": {
+      "icon": "smart-lookup",
+      "color": "red"
+    }
+  },
+  "bookmarkIcons": {},
+  "tagIcons": {
+    "Veille": {
+      "icon": "lucide-user-search"
+    },
+    "homelab": {
+      "icon": "lucide-test-tube"
+    },
+    "homelab/machine": {
+      "icon": "lucide-computer"
+    },
+    "content": {
+      "icon": "lucide-table-of-contents"
+    },
+    "content/factory": {
+      "icon": "lucide-factory"
+    },
+    "Energie": {
+      "icon": "🔌"
+    },
+    "Gémini": {
+      "icon": "lucide-brain-cog"
+    },
+    "IA": {
+      "icon": "lucide-brain-cog"
+    },
+    "serveur": {
+      "icon": "lucide-server"
+    },
+    "Solaire": {
+      "icon": "☀️"
+    },
+    "source/web": {
+      "icon": "🕸️"
+    },
+    "Windows": {
+      "icon": "🪟"
+    }
+  },
+  "propertyIcons": {},
+  "ribbonIcons": {},
+  "fileRules": [],
+  "folderRules": [
+    {
+      "id": "W5PlY",
+      "name": "Règle sans titre",
+      "match": "all",
+      "conditions": [
+        {
+          "source": "name",
+          "operator": "contains"
+        }
+      ],
+      "enabled": true
+    }
+  ],
+  "rememberDeletedItems": false
+}

@@ -1,0 +1,169 @@
+{
+  "settings": {
+    "displayIndividualItems": false,
+    "showNotes": true,
+    "showLinks": true,
+    "showTags": true,
+    "showQuality": true,
+    "showOwn": true,
+    "showSource": true,
+    "showOwnPct": true,
+    "showSourcePct": true,
+    "showConcepts": false,
+    "showOrphans": true,
+    "showTracePct": true,
+    "showSourcesTrace": false,
+    "showDanglingList": true,
+    "excludedFolders": [],
+    "ownTags": [
+      "thought",
+      "synthesis",
+      "fleeting"
+    ],
+    "sourceTags": [
+      "book",
+      "article",
+      "video",
+      "lecture",
+      "literature",
+      "literature-note"
+    ],
+    "conceptTags": [
+      "concept"
+    ],
+    "folderGroups": [],
+    "showFolderBreakdown": false,
+    "historyExportFolder": "",
+    "canonicalTags": [],
+    "rareTagThreshold": 3,
+    "showTaxonomyDrift": false,
+    "showHistory": false,
+    "showInbox": false,
+    "inboxFolders": [],
+    "inboxReviewTags": [
+      "inbox/review"
+    ],
+    "metricsShowLinks": true,
+    "metricsShowTags": true,
+    "metricsShowConcepts": true,
+    "metricsShowOrphans": true,
+    "metricsShowAvgWords": true,
+    "tanglesMode": "and",
+    "tanglesMinIn": 5,
+    "tanglesMinOut": 5,
+    "tanglesMinTotal": 10,
+    "tanglesTopN": 25,
+    "tanglesReportFolder": "",
+    "tanglesExclude": []
+  },
+  "history": [
+    {
+      "date": "2026-05-20",
+      "notes": 1767,
+      "links": 4001,
+      "tags": 931,
+      "ownNotes": 0,
+      "sourceNotes": 130,
+      "conceptNotes": 9,
+      "orphanNotes": 773,
+      "sourcesWithTrace": 0,
+      "words": 495054
+    },
+    {
+      "date": "2026-05-21",
+      "notes": 1773,
+      "links": 3984,
+      "tags": 947,
+      "ownNotes": 0,
+      "sourceNotes": 130,
+      "conceptNotes": 10,
+      "orphanNotes": 786,
+      "sourcesWithTrace": 0,
+      "words": 501390
+    },
+    {
+      "date": "2026-05-22",
+      "notes": 1778,
+      "links": 4004,
+      "tags": 954,
+      "ownNotes": 0,
+      "sourceNotes": 130,
+      "conceptNotes": 10,
+      "orphanNotes": 789,
+      "sourcesWithTrace": 0,
+      "words": 503435
+    },
+    {
+      "date": "2026-05-23",
+      "notes": 1773,
+      "links": 4067,
+      "tags": 967,
+      "ownNotes": 0,
+      "sourceNotes": 130,
+      "conceptNotes": 10,
+      "orphanNotes": 802,
+      "sourcesWithTrace": 0,
+      "words": 549910
+    },
+    {
+      "date": "2026-05-24",
+      "notes": 1775,
+      "links": 4067,
+      "tags": 970,
+      "ownNotes": 0,
+      "sourceNotes": 130,
+      "conceptNotes": 10,
+      "orphanNotes": 804,
+      "sourcesWithTrace": 0,
+      "words": 550304
+    },
+    {
+      "date": "2026-05-25",
+      "notes": 1785,
+      "links": 4094,
+      "tags": 984,
+      "ownNotes": 0,
+      "sourceNotes": 130,
+      "conceptNotes": 10,
+      "orphanNotes": 806,
+      "sourcesWithTrace": 0,
+      "words": 555364
+    },
+    {
+      "date": "2026-05-27",
+      "notes": 1793,
+      "links": 4014,
+      "tags": 988,
+      "ownNotes": 0,
+      "sourceNotes": 130,
+      "conceptNotes": 10,
+      "orphanNotes": 815,
+      "sourcesWithTrace": 0,
+      "words": 557139
+    },
+    {
+      "date": "2026-05-28",
+      "notes": 1797,
+      "links": 5005,
+      "tags": 929,
+      "ownNotes": 0,
+      "sourceNotes": 133,
+      "conceptNotes": 9,
+      "orphanNotes": 628,
+      "sourcesWithTrace": 0,
+      "words": 566832
+    },
+    {
+      "date": "2026-05-29",
+      "notes": 1800,
+      "links": 5025,
+      "tags": 929,
+      "ownNotes": 0,
+      "sourceNotes": 133,
+      "conceptNotes": 9,
+      "orphanNotes": 627,
+      "sourcesWithTrace": 0,
+      "words": 570013
+    }
+  ]
+}

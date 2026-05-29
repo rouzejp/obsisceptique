@@ -1,0 +1,26 @@
+{
+  "templatesFolder": "07_Templates",
+  "dateFormat": "YYYY-MM-DD",
+  "timeFormat": "HH:mm",
+  "triggerOnFileCreation": true,
+  "autoJumpToCursor": true,
+  "enableFolderTemplates": true,
+  "folderTemplates": [
+    {
+      "folder": "02_Revendications",
+      "template": "07_Templates/template-fact-check.md"
+    },
+    {
+      "folder": "03_Verifications/03a_confirme",
+      "template": "07_Templates/template-fact-check.md"
+    },
+    {
+      "folder": "03_Verifications/03b_infirme",
+      "template": "07_Templates/template-fact-check.md"
+    },
+    {
+      "folder": "03_Verifications/03c_nuance",
+      "template": "07_Templates/template-fact-check.md"
+    }
+  ]
+}

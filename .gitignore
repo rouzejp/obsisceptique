@@ -1,8 +1,29 @@
-.obsidian/
+# Obsidian local state (per-machine)
+.obsidian/workspace.json
+.obsidian/workspace.json.bak
+.obsidian/appearance.json
+
+# Plugin binaries (downloaded on first launch)
+.obsidian/plugins/*/main.js
+.obsidian/plugins/*/styles.css
+.obsidian/plugins/*/style.css
+.obsidian/plugins/*/manifest.json
+.obsidian/plugins/*/lib/
+.obsidian/plugins/*/assets/
+.obsidian/plugins/*/esm/
+
+# But keep plugin config files (data.json)
+!.obsidian/plugins/*/data.json
+
+# Syncthing
 .stfolder/
 .stignore
+
+# Python
 .smart-env/
 __pycache__/
 *.pyc
+
+# OS
 .DS_Store
 Thumbs.db

@@ -1,0 +1,14 @@
+{
+  "attachmentFolderPath": "90_Systeme/Attachments",
+  "alwaysUpdateLinks": true,
+  "promptDelete": false,
+  "showUnsupportedFiles": true,
+  "newFileLocation": "current",
+  "livePreview": true,
+  "readableLineLength": true,
+  "strictLineBreaks": true,
+  "useTab": false,
+  "showLineNumber": true,
+  "spellcheck": true,
+  "spellcheckLanguages": ["fr", "en"]
+}

@@ -1,0 +1,16 @@
+{
+  "hierarchy": {
+    "parent": "up",
+    "child": "down",
+    "sibling": "same"
+  },
+  "fields": [
+    {"name": "up", "type": "parent"},
+    {"name": "down", "type": "child"},
+    {"name": "same", "type": "sibling"}
+  ],
+  "showBreadcrumbTitle": true,
+  "showTrail": true,
+  "showFieldInMenu": true,
+  "defaultView": "trail"
+}

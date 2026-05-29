@@ -1,0 +1,18 @@
+{
+  "showShortcut": true,
+  "showExcerpt": true,
+  "showContext": true,
+  "showPath": true,
+  "showBreadcrumbs": true,
+  "weightBasename": 10,
+  "weightH1": 8,
+  "weightH2": 6,
+  "weightH3": 4,
+  "weightUnmarkedTags": 2,
+  "showIndexingStatus": true,
+  "minSearchLength": 2,
+  "showRibbonIcon": true,
+  "vaultIndexOnly": false,
+  "showNotifications": false,
+  "searchDelay": 150
+}

@@ -1,0 +1,11 @@
+{
+  "omnisearch": {
+    "showPath": true,
+    "respectExcludedFolders": true,
+    "excludePatterns": [
+      ".git/",
+      ".obsidian/",
+      "90_Systeme/"
+    ]
+  }
+}
