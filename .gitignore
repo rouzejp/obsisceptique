@@ -1,0 +1,8 @@
+.obsidian/
+.stfolder/
+.stignore
+.smart-env/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
