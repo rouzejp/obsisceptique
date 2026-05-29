@@ -1,140 +1,223 @@
----
-title: AGENTS — Architecture du système ObsiSceptique
-description: Organisation, responsabilités et flux des workers Hermes pour le vault de scepticisme
-tags: [architecture, agents, kanban, orchestration]
----
+# AGENTS.md — Architecture d'orchestration ObsiSceptique
 
-# AGENTS.md — Architecture ObsiSceptique
-
-> Document d'architecture des workers et flux de traitement du vault ObsiSceptique.
-> Complément à `_index.md` pour la partie orchestration.
+> Document complémentaire à `_index.md`
+> Décrit comment les tâches sont traitées via Hermes, les boards Kanban et les workers spécialisés.
 
 ---
 
 ## Principe
 
-ObsiSceptique fonctionne comme un **pipeline de traitement** où chaque étape est une carte Kanban qui progresse dans les colonnes `triage → ready → running → done`.
+L'orchestration ne repose pas sur des agents autonomes tournant en permanence, mais sur un **flux de travail** où chaque étape est matérialisée par une **carte Kanban** qui progresse dans les colonnes :
 
-L'orchestrateur (Hermes) distribute les tâches entre :
-- Les **crons et watchers** (collecte automatique)
-- Les **skills** (procédures spécialisées)
-- Les **kanban workers** (tâches longues tracées dans le board)
-- **L'humain** (validation, décision, rédaction finale)
+```
+triage → todo → ready → running → done
+```
+
+À chaque étape, Hermes (toi ou moi) traite la carte, puis la fait passer à l'étape suivante.
 
 ---
 
-## Pipeline de traitement
+## Pipeline de traitement d'un claim
 
 ```
-                    ┌─────────────────────┐
-                    │   VEILLE (crons)    │
-                    │ watchers RSS,       │
-                    │ Mastodon, GitHub    │
-                    └─────────┬───────────┘
-                              │ détection claim
-                              ▼
-┌─────────────────────────────────────────────────────┐
-│  INBOX (01_Inbox/)                                  │
-│  Fiche brute : claim + source + date                │
-│  Déclenché : cron / watcher                         │
-│  Action : écriture fichier .md, pas d'analyse       │
-└─────────────────────────────────────────────────────┘
-                              │ Hermes valide + déplace
-                              ▼
-┌─────────────────────────────────────────────────────┐
-│  REVENDICATION (02_Revendications/)                 │
-│  Claim validé, structuré, prêt à vérifier           │
-│  Kanban : triage → ready                            │
-└─────────────────────────────────────────────────────┘
-                              │
-              ┌───────────────┴───────────────┐
-              │                               │
-              ▼                               ▼
-┌─────────────────────────┐   ┌─────────────────────────┐
-│  ANALYSE                 │   │  OSINT                  │
-│  Fact-check méthodique   │   │  Traçage des sources    │
-│  → 03_Verifications/    │   │  → 04_Sources/          │
-│  Kanban: ready → running │   │  Kanban: ready → running│
-└────────────┬────────────┘   └────────────┬────────────┘
-              │                               │
-              └───────────────┬───────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────┐
-│  CORRÉLATION (05_Correlations/)                     │
-│  Patterns, réseaux, liens entre vérifications       │
-│  Kanban : ready → running → done                    │
-└─────────────────────────────────────────────────────┘
-                              │ Hermes valide
-                              ▼
-┌─────────────────────────────────────────────────────┐
-│  RÉDACTION (06_Publications/)                       │
-│  Article sourcé → brouillon → publié (WordPress)     │
-│  Kanban : ready → running → done                    │
-└─────────────────────────────────────────────────────┘
+🌐 Veille / Capture
+      │  (flux RSS, Mastodon, article, échange)
+      ▼
+┌─────────────┐  Carte Kanban → 01_Inbox/
+│   TRIAGE    │  Triage : est-ce vérifiable ? pertinent ?
+└──────┬──────┘
+       │  ↓ promote → todo
+       ▼
+┌─────────────────┐  Carte → 02_Revendications/
+│  REVENDICATION  │  Claim formalisé + sources brutes
+└────────┬────────┘
+         │  ↓ ready → running
+         ▼
+┌──────────────┐   ┌──────────────┐
+│  ANALYSE     │   │   OSINT      │  ← en parallèle
+│  fact-check  │◄──┤   sources    │
+│  verdict     │   │   acteurs    │
+└──────┬───────┘   └──────┬───────┘
+       │                  │
+       └──────┬───────────┘
+              ▼
+┌──────────────┐
+│ CORRELATION  │  Patterns, liens avec d'autres vérifications
+└──────┬───────┘
+       │
+       ▼
+┌──────────────┐
+│  REDACTION   │  Article sourcé → 06_Publications/
+└──────┬───────┘
+       │
+       ▼
+  Publication WordPress
 ```
 
 ---
 
-## Correspondance workers ↔ outils Hermes
+## Cartes Kanban par agent
 
-| Étape | Outil Hermes | Déclencheur | Sortie |
+Chaque « agent » correspond à un type de carte dans un board Kanban, pas à un processus autonome :
+
+| Agent | Board | Colonne d'entrée | Dossier vault |
 |---|---|---|---|
-| **Veille** | Watchers (crons RSS/API/GitHub) | `*/6 * * * *` | Fiche dans `01_Inbox/` |
-| **Inbox** | Skill `veille` + script | Nouveau fichier détecté | Claim extrait |
-| **Revendication** | Kanban (board `default`) | Hermes valide le claim | Carte Kanban + fichier |
-| **Analyse** | Kanban worker + DeepSeek | Carte en `ready` → `running` | Verdict dans `03_Verifications/` |
-| **OSINT** | Kanban worker + recherche structurée | Carte en `ready` → `running` | Fiche source dans `04_Sources/` |
-| **Corrélation** | Kanban worker + Dataview | Batch de vérifications terminé | Liens dans `05_Correlations/` |
-| **Rédaction** | Hermes + API WordPress | Carte en `ready` | Article publié sur rouze.eu |
-| **Mémoire/Index** | Hermes (toi) | Après chaque écriture | Mise à jour `00_Index/` |
+| **Veille** | `default` | triage | `01_Inbox/`, `08_Veille/` |
+| **Analyse** | `default` | ready | `03_Verifications/` |
+| **OSINT** | `default` | ready | `04_Sources/` |
+| **Corrélation** | `default` | ready | `05_Correlations/` |
+| **Rédaction** | `default` | ready | `06_Publications/` |
+| **Dialogue** | — | interaction directe | `02_Revendications/` |
+| **Mémoire** | — | mise à jour passive | `00_Index/` |
 
----
+### 1. Agent Veille
 
-## Kanban boards
+**Rôle :** Surveillance passive des flux d'information.
 
-| Board | Usage | Colonnes actives |
+| Entrée | Sortie | Déclenché par |
 |---|---|---|
-| `default` | Veille, articles, OSINT — flux principal | triage → ready → running → done |
-| `homelab` | Tâches infrastructure | triage → ready → running → done |
-| `lecture` | Livres, articles à noter | triage → todo → done |
+| Flux RSS, API Mastodon, articles web | Fiche brute dans `01_Inbox/` | Crons Hermes (watchers) / demande explicite |
 
----
+**Ce qu'il fait :**
+- Collecte les claims, articles, liens intéressants
+- Crée une carte Kanban en **triage** sur le board `default`
+- Ne vérifie PAS, ne commente PAS, collecte seulement
 
-## Principes SOLID appliqués
+**Prompt type :**
+> Tu surveilles les flux scepticisme/zététique. Identifie les affirmations nouvelles et vérifiables. Crée une fiche dans `01_Inbox/` avec : claim exact, source URL, date, urgence (faible/moyen/élevé). Puis crée une carte Kanban en triage.
 
-| Principe | Application |
+### 2. Agent Analyse (fact-check)
+
+**Rôle :** Vérification méthodique d'un claim.
+
+| Entrée | Sortie |
 |---|---|
-| **S** — Single Responsibility | Chaque worker fait une seule chose. La veille ne vérifie pas. L'analyse ne publie pas. |
-| **O** — Open/Closed | Ajouter un watcher ne modifie pas les workers existants. |
-| **L** — Liskov Substitution | Tout worker produit une note Obsidian `.md` ou un signal Hermes. |
-| **I** — Interface Segregation | Chaque worker reçoit uniquement ce dont il a besoin (pas les conversations brutes à l'indexeur). |
-| **D** — Dependency Inversion | Les chemins du vault sont dans `_index.md`, pas codés en dur dans les workers. |
+| Claim depuis `02_Revendications/` | Fiche dans `03_Verifications/` avec verdict |
 
----
+**Grille d'analyse :**
+1. Type d'affirmation (empirique / normative / interprétative)
+2. Sources primaires (peer-reviewed, consensus scientifique)
+3. Biais détectés (confirmation, autorité, anecdote…)
+4. Verdict + niveau de certitude
+5. Explication pédagogique
 
-## X Commandements × Workers
+**Verdicts possibles :** `03a_confirme/` ✓ | `03b_infirme/` ✗ | `03c_nuance/` ~
 
-| Commandement | Workers concernés |
+### 3. Agent OSINT (sources)
+
+**Rôle :** Traçage des acteurs et évaluation des sources.
+
+| Entrée | Sortie |
 |---|---|
-| I — égalité | Dialogue (humain), Rédaction |
-| II — écoute | Veille, Dialogue |
-| III — comprendre | Analyse, Dialogue |
-| V — sans jugement | OSINT, Rédaction |
-| VI — expliquer | Analyse, Rédaction |
-| VIII — ses erreurs | **TOUS** (obligation transversale) |
-| IX — pas d'obstination | Corrélation, Dialogue |
-| X — points d'accord | Rédaction |
+| Acteur ou source signalé | Fiche dans `04_Sources/` |
+
+**Grille source :**
+- Type : individu · organisation · institution
+- Production : peer-review · vulgarisation · militantisme
+- Financement : indépendant · institutionnel · privé
+- Biais : conflits d'intérêts identifiés
+
+### 4. Agent Corrélation
+
+**Rôle :** Détection de patterns entre vérifications.
+
+| Entrée | Sortie |
+|---|---|
+| `03_Verifications/` + `04_Sources/` | Fiches dans `05_Correlations/` |
+
+**Types de corrélations :**
+- **causale** → A entraîne B (preuve explicite)
+- **fortuite** → co-occurrence sans lien établi
+- **thématique** → même domaine / même narratif
+- **réseau** → acteurs partagés
+
+**Certitude :** [!] faible · [!!] moyen · [!!!] élevé
+
+### 5. Agent Rédaction
+
+**Rôle :** Production d'articles sourcés.
+
+| Entrée | Sortie |
+|---|---|
+| Fiches vérifiées de `03_Verifications/` | Article dans `06_Publications/` |
+
+**Structure article :**
+1. Introduction accessible
+2. Points d'accord avec le lecteur
+3. Développement argumenté sourcé
+4. Nuances et limites
+5. Conclusion ouverte
+
+**Exports :** Markdown (vault) → WordPress (API REST)
+
+### 6. Agent Dialogue
+
+**Rôle :** Interaction humaine directe (toi ↔ Hermes).
+
+C'est toi qui parles à Hermes. Quand un échange identifie un claim vérifiable, Hermes crée une fiche dans `02_Revendications/` et une carte Kanban.
+
+### 7. Agent Mémoire / Index
+
+**Rôle :** Maintien de la cohérence du vault.
+
+Déclenché après chaque nouvelle fiche : mettre à jour `00_Index/`, ajouter les wikilinks, taguer, détecter les doublons.
+
+**Règle absolue :** ne JAMAIS modifier le corps d'une fiche existante — métadonnées et liens uniquement.
 
 ---
 
-## Flux Kanban typique
+## Correspondance avec les boards Kanban
 
-1. **Watcher** détecte un claim → dépose dans `01_Inbox/`
-2. Hermes crée une carte en **triage** sur le board `default`
-3. Tu valides → la carte passe en **ready**
-4. Le worker (Hermes) prend la carte → **running** → exécute l'analyse
-5. Résultat déposé dans `03_Verifications/` → carte en **done`
-6. Étape suivante : Corrélation ou Rédaction, avec dépendance sur la carte précédente
+```
+Board "default"
+┌────────┬────────┬────────┬────────┬────────┬────────┐
+│triage  │ todo   │ ready  │running │blocked │ done   │
+├────────┼────────┼────────┼────────┼────────┼────────┤
+│Nouveau │À       │Prêt à │En cours│Blocage │Terminé│
+│claim   │vérifier│analyser│        │        │        │
+└────────┴────────┴────────┴────────┴────────┴────────┘
+```
 
-Voir `_index.md` pour la structure complète du vault.
+**Dépendances entre cartes** (parents/enfants) :
+```
+Veille (triage)  →  Analyse (ready)  →  Corrélation (ready)
+                        ↓                    ↓
+                    OSINT (ready)       Rédaction (ready)
+```
+
+Une carte enfant ne passe en `ready` que quand sa parente est `done`.
+
+---
+
+## Exemple de workflow complet
+
+1. **Veille :** Un watcher RSS détecte un article sur l'homéopathie
+   → Carte en triage : « Homeopathie : nouvelle étude X »
+   → Fiche dans `01_Inbox/`
+
+2. **Tri :** Tu qualifies le sujet
+   → Passe en todo
+   → Déplace la fiche dans `02_Revendications/`
+
+3. **Analyse + OSINT** (parallèle) :
+   → Carte Analyse passe en running → verdict dans `03_Verifications/`
+   → Carte OSINT passe en running → fiche acteurs dans `04_Sources/`
+
+4. **Corrélation :** Quand Analyse et OSINT sont done
+   → Carte Corrélation passe en ready → liens dans `05_Correlations/`
+
+5. **Rédaction :** Quand Corrélation est done
+   → Carte Rédaction passe en ready → article dans `06_Publications/`
+
+6. **Publication :** Article publié sur WordPress
+   → Carte passe en done
+
+---
+
+## Licence
+
+MIT — voir LICENSE.
+
+---
+
+*Document adapté des principes AGENTS.md proposés par un lecteur de l'article sur le scepticisme assisté (rouze.eu).*
