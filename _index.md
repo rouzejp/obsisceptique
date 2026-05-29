@@ -7,7 +7,9 @@ Structure inspirée du système de connaissances Jenkins.
 ## Architecture
 
 ```
-00_Index/          ← glossaire, index thématique
+00_Index/          ← glossaire, index thématique, biais cognitifs
+   glossaire.md    ← termes généraux
+   glossaire-biais-cognitifs.md ← glossaire complet des biais
 01_Inbox/          ← captures brutes, liens, notes rapides
 02_Revendications/ ← les claims à vérifier (une note par sujet)
 03_Verifications/  ← fact-checks conclus

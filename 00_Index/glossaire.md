@@ -2,6 +2,8 @@
 
 Termes clés de la zététique et du scepticisme scientifique.
 
+> **📖 Glossaire détaillé des biais cognitifs :** [[00_Index/glossaire-biais-cognitifs]]
+
 ## Zététique
 Méthode d'investigation basée sur l'esprit critique et la démarche scientifique. Du grec *zêtêin* : chercher, examiner.
 
